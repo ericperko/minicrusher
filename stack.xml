@@ -1,0 +1,9 @@
+<stack>
+  <description brief="minicrusher">minicrusher</description>
+  <author>Maintained by Eric Perko</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>https://github.com/ericperko/minicrusher</url>
+  <depend stack="ros" />
+
+</stack>
