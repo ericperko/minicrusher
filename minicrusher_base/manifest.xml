@@ -1,0 +1,16 @@
+<package>
+  <description brief="minicrusher_base">
+
+     minicrusher_base
+
+  </description>
+  <author>Eric Perko</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/minicrusher_base</url>
+  <depend package="roscpp"/>
+  <depend package="dynamic_reconfigure"/>
+
+</package>
+
+
