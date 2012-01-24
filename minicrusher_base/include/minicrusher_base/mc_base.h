@@ -9,7 +9,7 @@ namespace minicrusher_base {
 
             ~MCBase() {};
 
-            void close() { shutting_down_ = true };
+            void close() { shutting_down_ = true; };
         private:
             std::string port_;
             uint32_t baud_rate_;
