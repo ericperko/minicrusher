@@ -19,6 +19,25 @@ int main(int argc, char* argv[])
     }
   }
 
-  std::cout << "Got 100 packets... quitting" << std::endl;
+  std::cout << "Got 100 packets..." << std::endl;
+  std::cout << "Trying to send some velocity commands..." << std::endl;
+
+  minicrusher_base::command_packet_t cmd_packet;
+  cmd_packet.wheel_vels_mmps[0] = 500;
+  cmd_packet.wheel_vels_mmps[1] = -500;
+  cmd_packet.wheel_vels_mmps[2] = 500;
+  cmd_packet.wheel_vels_mmps[3] = -500;
+  cmd_packet.wheel_vels_mmps[4] = 500;
+  cmd_packet.wheel_vels_mmps[5] = -500;
+  cmd_packet.enable = 1;
+
+
+  for(int i = 0; i < 100; i++)
+  {
+    mc.sendCommandPacket(cmd_packet);
+    usleep(50 * 1000 );
+    std::cout << "Sent a command packet..." << std::endl;
+  }
+
   return 0;
 }
