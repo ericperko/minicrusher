@@ -10,7 +10,7 @@ namespace minicrusher_base {
 
             ~MCBase() {};
 
-            bool sendCommandPacket(command_packet_t& packet);
+            bool sendCommandPacket(const command_packet_t& packet);
 
             void receivePacket(mc_packet_t& mc_packet); //will wait until getting a valid packet then return
 
@@ -26,5 +26,9 @@ namespace minicrusher_base {
             MCBase();
             MCBase(const MCBase&);
             void operator=(const MCBase&);
+
+            static command_packet_t swapCommandPacket(const command_packet_t& packet);
+            static void swapStatusPacket(status_packet_t& packet);
+            static void swapEncoderPacket(encoder_packet_t& packet);
     };
 }; //namespace minicrusher_base

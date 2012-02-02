@@ -55,7 +55,6 @@ namespace minicrusher_base {
         };
     } mc_packet_t;
 
-
 }; //namespace minicrusher_base
 
 #endif //#ifndef _MC_STRUCTS_H
