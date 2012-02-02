@@ -5,6 +5,7 @@
 
 namespace minicrusher_base {
   typedef boost::crc_optimal<16, 0x1021, 0xFFFF, 0xFFFF, true, true> mc_crc_t;
+  static const uint16_t good_checksum = 0xF0B8;
 
   MCBase::MCBase(const std::string& port, uint32_t baud_rate, boost::asio::io_service& io):
     port_(port),
@@ -21,7 +22,7 @@ namespace minicrusher_base {
     packet_to_send.type = PACKET_CMD;
     packet_to_send.length = CMD_PACKET_SIZE;
     packet_to_send.command_packet = swapCommandPacket(packet);
-    
+
     //Add the checksum
     mc_crc_t crc_calc;
     crc_calc.process_bytes(&packet_to_send, CMD_PACKET_SIZE - 2);
@@ -62,18 +63,26 @@ namespace minicrusher_base {
           boost::asio::read(serial_, boost::asio::buffer(&temp_packet.length, 1));
           boost::asio::read(serial_, boost::asio::buffer(&temp_packet.payload, (temp_packet.length-4)));
           //TODO: check the checksum
-          switch(temp_packet.type) {
-            case PACKET_STATUS:
-              swapStatusPacket(temp_packet.status_packet);
-              got_valid_packet = true;
-              break;
-            case PACKET_ENCODER:
-              swapEncoderPacket(temp_packet.encoder_packet);
-              got_valid_packet = true;
-              break;
-            default:
-              got_valid_packet = false;
-              break;
+          mc_crc_t crc_calc;
+          crc_calc.process_bytes(&temp_packet, temp_packet.length);
+          if(crc_calc.checksum() == good_checksum) {
+            switch(temp_packet.type) {
+              case PACKET_STATUS:
+                swapStatusPacket(temp_packet.status_packet);
+                got_valid_packet = true;
+                break;
+              case PACKET_ENCODER:
+                swapEncoderPacket(temp_packet.encoder_packet);
+                got_valid_packet = true;
+                break;
+              default:
+                got_valid_packet = false;
+                break;
+            }
+          }
+          else {
+            std::cout << "Bad checksum received!" << std::endl;
+            got_valid_packet = false;
           }
         }
       }

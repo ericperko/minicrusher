@@ -26,5 +26,6 @@ rosbuild_add_boost_directories()
 #common commands for building c++ executables and libraries
 rosbuild_add_library(minicrusher_base src/mc_base.cpp)
 rosbuild_link_boost(minicrusher_base system)
-#rosbuild_add_executable(example examples/example.cpp)
-#target_link_libraries(example ${PROJECT_NAME})
+
+rosbuild_add_executable(check_mc_comms standalone/check_mc_comms.cpp)
+target_link_libraries(check_mc_comms minicrusher_base)
