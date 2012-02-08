@@ -3,11 +3,11 @@
 #include <boost/asio.hpp>
 #include <geometry_msgs/Twist.h>
 
-void cmd_vel_callback(const geometry_msgs::Twist& twist)
+void cmd_vel_callback(const geometry_msgs::Twist::ConstPtr& twist, minicrusher_base::MCBase& mc)
 {
   minicrusher_base::command_packet_t cmd_packet;
-  int16_t lefts = floor(twist.linear.x * 1000);
-  int16_t rights = floor(twist.linear.x * 1000);
+  int16_t lefts = floor(twist->linear.x * 1000);
+  int16_t rights = floor(twist->linear.x * 1000);
 
   cmd_packet.enable = 1;
   for(uint8_t i = 0; i < 6; i++)
@@ -22,8 +22,10 @@ void cmd_vel_callback(const geometry_msgs::Twist& twist)
     }
   }
 
-
-
+  if(!mc.sendCommandPacket(cmd_packet))
+  {
+    ROS_WARN("Failed to send command packet to MC");
+  }
 }
 
 int main(int argc, char* argv[])
@@ -43,7 +45,8 @@ int main(int argc, char* argv[])
 
   try{
     minicrusher_base::MCBase mc(port, baud_rate, io);
-    ros::Subscriber twist_sub = nh.subscribe<geometry_msgs::Twist>("cmd_vel", 1, cmd_vel_callback);
+    ros::Subscriber twist_sub = nh.subscribe<geometry_msgs::Twist>("cmd_vel", 1, boost::bind(cmd_vel_callback, _1, boost::ref(mc)));
+    ros::spin();
   }
   catch (boost::system::system_error ex) {
     ROS_ERROR("Error instantiating MCBase. Are you sure you have the correct port and baud rate? Error was %s", ex.what());
