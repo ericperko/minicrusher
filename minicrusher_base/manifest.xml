@@ -9,7 +9,7 @@
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/minicrusher_base</url>
   <depend package="roscpp"/>
-  <depend package="dynamic_reconfigure"/>
+  <depend package="geometry_msgs" />
 
 </package>
 
