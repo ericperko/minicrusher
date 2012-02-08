@@ -1,4 +1,5 @@
 #include <minicrusher_base/mc_base.h>
+#include <iostream>
 
 int main(int argc, char* argv[])
 {

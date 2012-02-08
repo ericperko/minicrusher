@@ -2,6 +2,7 @@
 #include "minicrusher_base/mc_structs.h"
 #include <endian.h>
 #include <boost/crc.hpp>
+#include <iostream>
 
 namespace minicrusher_base {
   typedef boost::crc_optimal<16, 0x1021, 0xFFFF, 0xFFFF, true, true> mc_crc_t;
