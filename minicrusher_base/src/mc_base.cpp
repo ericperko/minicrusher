@@ -1,11 +1,11 @@
 #include "minicrusher_base/mc_base.h"
 #include "minicrusher_base/mc_structs.h"
+#include <iostream>
 #include <endian.h>
 #include <boost/crc.hpp>
-#include <iostream>
 
 namespace minicrusher_base {
-  typedef boost::crc_optimal<16, 0x1021, 0xFFFF, 0xFFFF, true, true> mc_crc_t;
+  typedef boost::crc_optimal<16, 0x1021, 0xFFFF, 0x0, true, true> mc_crc_t;
   static const uint16_t good_checksum = 0xF0B8;
 
   MCBase::MCBase(const std::string& port, uint32_t baud_rate, boost::asio::io_service& io):
@@ -28,8 +28,9 @@ namespace minicrusher_base {
     mc_crc_t crc_calc;
     crc_calc.process_bytes(&packet_to_send, CMD_PACKET_SIZE - 2);
     uint16_t checksum = crc_calc.checksum();
-    packet_to_send.payload[CMD_PACKET_SIZE-2] = (checksum & 0x00ff);
-    packet_to_send.payload[CMD_PACKET_SIZE-1] = ((checksum >> 8) & 0x00ff);
+    checksum ^= 0xFFFF;
+    packet_to_send.payload[CMD_PACKET_SIZE-(4+2)] = (checksum & 0x00ff);
+    packet_to_send.payload[CMD_PACKET_SIZE-(4+1)] = ((checksum >> 8) & 0x00ff);
 
     std::vector<boost::asio::const_buffer> buffers_to_send;
     buffers_to_send.push_back(boost::asio::const_buffer(&packet_to_send.sync1, 1));
@@ -61,9 +62,12 @@ namespace minicrusher_base {
           temp_packet.sync1 = 'M';
           temp_packet.sync2 = 'C';
           boost::asio::read(serial_, boost::asio::buffer(&temp_packet.type, 1));
+	  //std::cout << (int)temp_packet.type << std::endl;
           boost::asio::read(serial_, boost::asio::buffer(&temp_packet.length, 1));
+          //std::cout << (int)temp_packet.length << std::endl;
           boost::asio::read(serial_, boost::asio::buffer(&temp_packet.payload, (temp_packet.length-4)));
-          //TODO: check the checksum
+	
+	  //Check the checksum
           mc_crc_t crc_calc;
           crc_calc.process_bytes(&temp_packet, temp_packet.length);
           if(crc_calc.checksum() == good_checksum) {
@@ -83,10 +87,15 @@ namespace minicrusher_base {
           }
           else {
             std::cout << "Bad checksum received!" << std::endl;
+            std::cout << "Checksum of received packet was: " << crc_calc.checksum() << " . Expected: " << good_checksum << std::endl;
             got_valid_packet = false;
           }
         }
       }
+    }
+    if(got_valid_packet)
+    {
+    	mc_packet = temp_packet;
     }
   }
 

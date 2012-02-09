@@ -30,5 +30,8 @@ rosbuild_link_boost(minicrusher_base system)
 rosbuild_add_executable(check_mc_comms standalone/check_mc_comms.cpp)
 target_link_libraries(check_mc_comms minicrusher_base)
 
+#rosbuild_add_executable(verify_checksum standalone/verify_checksum.cpp standalone/fcs.cpp)
+rosbuild_add_executable(verify_checksum standalone/verify_checksum.cpp)
+
 rosbuild_add_executable(minicrusher_driver_node src/mc_driver_node.cpp)
 target_link_libraries(minicrusher_driver_node minicrusher_base)
