@@ -10,6 +10,7 @@
   <url>http://ros.org/wiki/minicrusher_base</url>
   <depend package="roscpp"/>
   <depend package="geometry_msgs" />
+  <depend package="minicrusher_msgs" />
   <depend package="diagnostic_updater" />
 
 </package>
