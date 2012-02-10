@@ -213,6 +213,8 @@ int main(int argc, char* argv[])
 
   ros::init(argc, argv, "minicrusher_driver_node");
 
+  ros::NodeHandle nh;
+
   try{
     minicrusher_base::MCDriverNode driver;
     driver.run();
