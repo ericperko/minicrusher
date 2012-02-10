@@ -3,9 +3,11 @@
     <node respawn="true" pkg="joy" type="joy_node" name="minicrusher_joy">
 	<param name="dev" type="string" value="/dev/input/js0" />
 	<param name="deadzone" value="0.12" />
-	<param name="autorepeat_rate" value="20.0" />
+	<param name="autorepeat_rate" value="50.0" />
     </node>
 
     <node pkg="cwru_teleop" type="teleop_cwru_joy" name="teleop_minicrusher_joy">
+	<param name="linear_speed_max" value="1.2" />
+	<param name="angular_speed_max" value="2.0" />
     </node>
 </launch>

@@ -1,0 +1,5 @@
+<launch>
+
+    <node pkg="minicrusher_base" type="minicrusher_driver_node" name="minicrusher_driver_node">
+    </node>
+</launch>

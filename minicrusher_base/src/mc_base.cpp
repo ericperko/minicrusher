@@ -105,7 +105,7 @@ namespace minicrusher_base {
     for(size_t i = 0; i < 6; i++) {
       temp.wheel_vels_mmps[i] = htobe16(temp.wheel_vels_mmps[i]);
     }
-    return packet;
+    return temp;
   }
 
   void MCBase::swapStatusPacket(status_packet_t& packet) {

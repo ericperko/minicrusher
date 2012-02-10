@@ -160,10 +160,10 @@ namespace minicrusher_base
   {
     command_packet_t cmd_packet;
 
-    double v_change = twist->angular.z * track_width_m_ / 2.0;
+    double v_change = -1.0 * twist->angular.z * track_width_m_ / 2.0;
 
     int16_t lefts = ((twist->linear.x + v_change) * 1000);
-    int16_t rights = ((twist->linear.x - v_change) * 1000);
+    int16_t rights = (-(twist->linear.x - v_change) * 1000);
 
     ROS_DEBUG("Commands in ticks: Left: %d, Right: %d", lefts, rights);
 
