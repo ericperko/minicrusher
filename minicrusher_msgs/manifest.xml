@@ -1,0 +1,14 @@
+<package>
+  <description brief="minicrusher_msgs">
+
+     minicrusher_msgs
+
+  </description>
+  <author>Eric Perko</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/minicrusher_msgs</url>
+
+</package>
+
+
